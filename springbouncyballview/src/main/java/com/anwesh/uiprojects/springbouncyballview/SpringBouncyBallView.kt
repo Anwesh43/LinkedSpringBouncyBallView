@@ -200,6 +200,28 @@ class SpringBouncyBallView(ctx : Context) : View(ctx) {
         fun startUpdating(cb : () -> Unit) {
             curr.startUpdating(cb)
         }
+    }
 
+    data class Renderer(var view : SpringBouncyBallView) {
+
+        private val animator : Animator = Animator(view)
+        private val bss : BouncySpringBall = BouncySpringBall(0)
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        fun render(canvas : Canvas) {
+            canvas.drawColor(backColor)
+            bss.draw(canvas, paint)
+            animator.animate {
+                bss.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            bss.startUpdating {
+                animator.start()
+            }
+        }
     }
 }

@@ -20,8 +20,8 @@ val foreColor : Int = Color.parseColor("#3F51B5")
 val backColor : Int = Color.parseColor("#BDBDBD")
 val springSizeFactor : Float = 7f
 val springXFactor : Float = 5f
-val ballSizeFactor : Float = 10f
-val delay : Long = 20
+val ballSizeFactor : Float = 25f
+val delay : Long = 20L / parts
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
@@ -32,13 +32,13 @@ fun Canvas.drawSpringMotion(springSize : Float, springCurrX : Float, paint : Pai
     save()
     drawLine(0f, 0f, springCurrX, 0f, paint)
     translate(springCurrX, 0F)
-    drawLine(0f, 0f, 0f, -springSize, paint)
+    drawLine(0f, -springSize / 2, 0f, springSize / 2, paint)
     restore()
 }
 
 fun Canvas.drawBallMotion(ballCurrX : Float, ballR : Float, springX : Float, paint : Paint) {
     save()
-    translate(springX, 0f)
+    translate(springX + ballR, 0f)
     drawCircle(ballCurrX, 0f, ballR, paint)
     restore()
 }
@@ -67,7 +67,7 @@ fun Canvas.drawSBBNode(i : Int, scale : Float, paint : Paint) {
     paint.strokeCap = Paint.Cap.ROUND
     paint.strokeWidth = Math.min(w, h) / strokeFactor
     save()
-    translate(gap * (i + 1), h / 2)
+    translate(0f, gap * (i + 1))
     drawBouncySpringBall(w, scale, paint)
     restore()
 }
